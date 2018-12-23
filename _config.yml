@@ -1,0 +1,38 @@
+# Site settings
+name: 前端攻城狮viewerw的小窝
+email: 15601598900@126.com
+author: viewerw
+url: http://www.wwyuan.cn
+github: https://github.com/viewerw/
+baseurl: ""
+description: nodejs、vue、webpack、elmentui
+meta_description: wwy人博客;学而不思则罔;思而不学则殆;生命不止;折腾不休
+motto: 这是个没人关注的博客，作者 很懒。作者喜欢编码，喜欢吃鸡，喜欢DOTA。We should have a dream,just in case it will come true some day.
+banner: 学而不思则罔，思而不学则殆。
+
+#permalink: /:categories/:year/:month/:day/:title/
+permalink: /:year/:month/:day/:title/
+paginate: 10
+
+exclude: ['README.md', 'Gemfile.lock', 'Gemfile', 'Rakefile']
+
+github_username: viewerw
+highlighter: Pygments
+
+# Build settings
+markdown: kramdown
+
+baidu_analysis: 94be4b0f9fc5d94cc0d0415ea6761ae9
+
+FB:
+  comments :
+    provider : yungentie
+    duoshuo:
+        short_name : luoyan35714
+    disqus :
+        short_name : freudkang
+    # facebook :
+    #   appid : 123
+    #   num_posts: 5
+    #   width: 580
+    #   colorscheme: light

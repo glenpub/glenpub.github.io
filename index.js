@@ -1,174 +1,169 @@
-export default class PipCanvas {
-    constructor({
-        el,
-        imgList = [],
-        radio = 1,
-        index = 0,
-        scale = 0.99,
-        scaleReturn = 0.8,
-        w = 750,
-        h = 1206,
-        gif_timer = null,
-        gifImgs = [],
-    }) {
-        this.imgList = imgList;
-        this.radio = radio;
-        this.index = index;
-        this.scale = scale;
-        this.scaleReturn = scaleReturn;
-        this.w = w;
-        this.h = h;
-        this.gif_timer = gif_timer;
-        this.gifImgs = gifImgs;
-        this.canvas = $(el)[0];
-        this.ctx = this.canvas.getContext('2d');
-    }
-    loadGifImg() {
-        const loadPromises = this.gifImgs.map(
-            item =>
-                new Promise((resolve, reject) => {
-                    const img = new Image();
-                    img.src = item;
-                    img.onload = () => resolve(img);
-                    img.onerror = () => reject();
-                }),
-        );
-        return Promise.all(loadPromises);
-    }
-    loadPageImg() {
-        const loadPromises = this.imgList.map(
-            (item, index) =>
-                new Promise((resolve, reject) => {
-                    const img = new Image();
-                    img.src = item.link;
-                    img.i = index;
-                    img.name = index;
-                    img.className = 'item';
-                    item.image = img;
-                    img.onload = () => {
-                        $('.collection').append(item.image);
-                        resolve();
-                    };
-                    img.onerror = () => reject();
-                }),
-        );
-        return Promise.all(loadPromises);
-    }
-    async init() {
-        console.log('init', new Date().getTime());
-        await this.loadPageImg();
-        if (this.gifImgs.length > 0) {
-            await this.loadGifImg();
-        }
-        console.log('loadimg', new Date().getTime());
-        this.domList = $('.collection .item').sort(function(i, t) {
-            return i.name - t.name;
-        });
-        this.containerImage = this.domList[this.index + 1];
-        this.innerImage = this.domList[this.index];
-        this.draw();
-        document.addEventListener('touchstart', this.touchHandler.bind(this));
-        document.addEventListener('touchend', this.touchendHandler.bind(this));
-    }
-    touchHandler(e) {
-        e.stopPropagation();
-        // e.preventDefault();
-        const render = () => {
-            this.radio = this.radio * this.scale;
-            this.timer = requestAnimationFrame(render);
-            this.draw();
-        };
-        cancelAnimationFrame(this.timer);
-        this.willPause = false;
-        // clearInterval(this.gif_timer);
-        this.timer = requestAnimationFrame(render);
-    }
-    touchendHandler(e) {
-        e.stopPropagation();
-        // e.preventDefault();
-        if (this.imgList[this.index + 1] && this.imgList[this.index + 1].gif) {
-            this.willPause = true;
-        } else {
-            this.willPause = false;
-            cancelAnimationFrame(this.timer);
-        }
-    }
-    draw() {
-        if (this.index + 1 != this.imgList.length) {
-            if (
-                this.radio <
-                this.imgList[this.index + 1].areaW / this.imgList[this.index + 1].imgW
-            ) {
-                if (this.willPause) {
-                    this.radio =
-                        this.imgList[this.index + 1].areaW / this.imgList[this.index + 1].imgW;
-                    cancelAnimationFrame(this.timer);
-                }
-                this.index++;
-                this.radio = 1;
-                if (!this.imgList[this.index + 1]) {
-                    this.showEnd();
-                }
-            }
-            this.imgNext = this.imgList[this.index + 1];
-            this.imgCur = this.imgList[this.index];
-            this.containerImage = this.domList[this.index + 1];
-            this.innerImage = this.domList[this.index];
-            this.drawImgOversize(
-                this.containerImage,
-                this.imgNext.imgW,
-                this.imgNext.imgH,
-                this.imgNext.areaW,
-                this.imgNext.areaH,
-                this.imgNext.areaL,
-                this.imgNext.areaT,
-                this.radio,
-            ),
-                this.drawImgMinisize(
-                    this.innerImage,
-                    this.imgCur.imgW,
-                    this.imgCur.imgH,
-                    this.imgNext.imgW,
-                    this.imgNext.imgH,
-                    this.imgNext.areaW,
-                    this.imgNext.areaH,
-                    this.imgNext.areaL,
-                    this.imgNext.areaT,
-                    this.radio,
-                );
-        }
-    }
-    showEnd() {
-        console.log('end');
-    }
-    drawImgOversize(i, t, e, a, s, n, g, r) {
-        this.ctx.drawImage(
-            i,
-            n - (a / r - a) * (n / (t - a)),
-            g - (s / r - s) * (g / (e - s)),
-            a / r,
-            s / r,
-            0,
-            0,
-            750,
-            1206,
-        );
-    }
-    drawImgMinisize(i, t, e, a, s, n, g, r, m, h) {
-        this.ctx.drawImage(
-            i,
-            0,
-            0,
-            t,
-            e,
-            ((n / h - n) * (r / (a - n)) * h * 750) / n,
-            ((g / h - g) * (m / (s - g)) * h * 1206) / g,
-            750 * h,
-            1206 * h,
-        );
-    }
-    drawSprite(i, t, e, a, s, n, g) {
-        var r = s[a];
-        this.ctx.drawImage(i, r[0], r[1], r[2], r[3], t, e, n, g);
-    }
-}
+var pipCanvas = new PipCanvas({
+    imgList: [
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/cover_v2.jpg',
+            imgW: '750',
+            imgH: '1206',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p1.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '152',
+            areaH: '244',
+            areaL: '370',
+            areaT: '1068',
+            gif: 'p1',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p2.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '556',
+            areaH: '894',
+            areaL: '1251',
+            areaT: '1050',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p3.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '166',
+            areaH: '267',
+            areaL: '114',
+            areaT: '897',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p4.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '194',
+            areaH: '312',
+            areaL: '85',
+            areaT: '1402',
+            gif: 'p4',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p5.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '102',
+            areaH: '164',
+            areaL: '315',
+            areaT: '2188',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p6.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '280',
+            areaH: '450',
+            areaL: '441',
+            areaT: '467',
+            gif: 'p6',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p7.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '79',
+            areaH: '127',
+            areaL: '501',
+            areaT: '2514',
+            gif: 'p7',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p8.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '176',
+            areaH: '283',
+            areaL: '1582',
+            areaT: '1084',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p9.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '173',
+            areaH: '278',
+            areaL: '1472',
+            areaT: '1357',
+            gif: 'p9',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p10_1.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '179',
+            areaH: '287',
+            areaL: '516',
+            areaT: '1459',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p10.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '769',
+            areaH: '1237',
+            areaL: '558',
+            areaT: '873',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p11.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '112',
+            areaH: '181',
+            areaL: '881',
+            areaT: '1938',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p12.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '328',
+            areaH: '528',
+            areaL: '706',
+            areaT: '314',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p13.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '132',
+            areaH: '213',
+            areaL: '1184',
+            areaT: '908',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p14.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '82',
+            areaH: '132',
+            areaL: '206',
+            areaT: '2092',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p15.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '246',
+            areaH: '396',
+            areaL: '598',
+            areaT: '1270',
+        },
+        {
+            link: 'http://static.ws.126.net/f2e/ent/ent_painting2017/images/p16.jpg',
+            imgW: '1875',
+            imgH: '3015',
+            areaW: '76',
+            areaH: '122',
+            areaL: '462',
+            areaT: '2558',
+        },
+    ],
+    el: '#container',
+});
+pipCanvas.init();

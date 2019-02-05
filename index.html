@@ -1,0 +1,97 @@
+
+<!-- html5 -->
+<!DOCTYPE html>
+<html lang="zh-CN" v-app="ibsapp" >
+	<head>
+		<!-- 编码utf-8 -->
+		<meta charset="utf-8">
+		<!-- 使用chrome渲染，没有chrome使用最高版本的IE -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<!-- 屏幕宽度=设备宽度，初始比例=1,不可缩放,最大放大，最小缩放-->
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no,maximum-scale=1" />
+		<!-- 数字不当做电话 -->
+		<meta name="format-detection" content="telephone=no"/>
+		<!-- 禁止邮件自动跳转 -->
+		<meta name="format-detection" content="email=no"/>
+		<!-- seo字段 -->
+		<meta name="Keywords" content="北农商" />
+		<!-- 描述 -->
+		<meta name="description" content="北农商" />
+		<!-- 作者 -->
+		<meta name="author" content="CSII" />
+	</head>
+	<style type="text/css">
+	    html, body {
+	        margin: 0;
+	        padding: 0;
+	        height: 100%;
+	        background-color: #feae71;
+	    }
+	    #open-app {
+	    	display: none;
+	    }
+	    .download, .bg-mask, .tip, .btn-download {
+	    	position: absolute;
+	    }
+	    .bg-mask, .bg-download {
+	    	width: 100%;
+	    }
+	    .bg-mask {
+	        height: 100%;
+	        background-color: rgba(0, 0, 0, .7);
+	        z-index: 100;
+	        display: none;
+	    }
+	    .tip {
+	    	top: 0;
+	    	right: 0;
+	    	width: 85%
+	    }
+	    a.btn-download {
+	    	width: 66.85%;
+	    	height: 7.25%;
+	    	display: inline-block;
+	    	top: 33.4%;
+	    	left: 50%;
+	    	transform: translate(-50%,0);
+	    }
+	</style>
+	<body>
+		<iframe id="open-app" src="bjrcb://"></iframe>
+		<div class="bg-mask">
+			<img class="tip" src="download-tip.png">
+		</div>
+		<div class="download">
+			<img class="bg-download" src="download.jpg">
+			<a class="btn-download" onclick="gotoDownload()"></a>
+		</div>
+		<script type="text/javascript">
+			var UA = window.navigator.userAgent;
+			var isIOS = UA.match(/(iPhone|iPad);/i);
+			window.onload = function () {
+				if (isWeiXin() && !isIOS) {
+					document.body.style.overflow = 'hidden';
+					document.getElementsByTagName("html")[0].style.overflow = 'hidden';
+					document.getElementsByClassName("bg-mask")[0].style.display = "block";
+				} else if (isIOS) {
+					window.location.href = "bjrcb://";
+				}
+			};
+			function isWeiXin () {
+				var ua = UA.toLowerCase();
+				if (ua.match(/MicroMessenger/i) == 'micromessenger'){
+					return true;
+				} else {
+				  	return false;
+				}
+			};
+			function gotoDownload () {
+				if (isIOS) {
+					window.location.href = "https://itunes.apple.com/cn/app/id1381334034?1=cn&mt=8";
+				} else {
+					window.location.href = "http://download.bjrcb.com/mbs/bjrcb_1.5.0.apk";
+				}
+			};
+		</script>
+   </body>
+</html>

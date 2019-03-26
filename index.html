@@ -1,97 +1,98 @@
-
-<!-- html5 -->
 <!DOCTYPE html>
-<html lang="zh-CN" v-app="ibsapp" >
-	<head>
-		<!-- 编码utf-8 -->
-		<meta charset="utf-8">
-		<!-- 使用chrome渲染，没有chrome使用最高版本的IE -->
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<!-- 屏幕宽度=设备宽度，初始比例=1,不可缩放,最大放大，最小缩放-->
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no,maximum-scale=1" />
-		<!-- 数字不当做电话 -->
-		<meta name="format-detection" content="telephone=no"/>
-		<!-- 禁止邮件自动跳转 -->
-		<meta name="format-detection" content="email=no"/>
-		<!-- seo字段 -->
-		<meta name="Keywords" content="北农商" />
-		<!-- 描述 -->
-		<meta name="description" content="北农商" />
-		<!-- 作者 -->
-		<meta name="author" content="CSII" />
-	</head>
-	<style type="text/css">
-	    html, body {
-	        margin: 0;
-	        padding: 0;
-	        height: 100%;
-	        background-color: #feae71;
-	    }
-	    #open-app {
-	    	display: none;
-	    }
-	    .download, .bg-mask, .tip, .btn-download {
-	    	position: absolute;
-	    }
-	    .bg-mask, .bg-download {
-	    	width: 100%;
-	    }
-	    .bg-mask {
-	        height: 100%;
-	        background-color: rgba(0, 0, 0, .7);
-	        z-index: 100;
-	        display: none;
-	    }
-	    .tip {
-	    	top: 0;
-	    	right: 0;
-	    	width: 85%
-	    }
-	    a.btn-download {
-	    	width: 66.85%;
-	    	height: 7.25%;
-	    	display: inline-block;
-	    	top: 33.4%;
-	    	left: 50%;
-	    	transform: translate(-50%,0);
-	    }
-	</style>
-	<body>
-		<iframe id="open-app" src="bjrcb://"></iframe>
-		<div class="bg-mask">
-			<img class="tip" src="download-tip.png">
+<!--
+	NOTES:
+	1. All tokens are represented by '$' sign in the template.
+	2. You can write your code only wherever mentioned.
+	3. All occurrences of existing tokens will be replaced by their appropriate values.
+	4. Blank lines will be removed automatically.
+	5. Remove unnecessary comments before creating your template.
+-->
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="authoring-tool" content="Adobe_Animate_CC">
+<title>index</title>
+<!-- write your code here -->
+<style>
+  #animation_container {
+	position:absolute;
+	margin:auto;
+	left:0;right:0;
+	top:0;bottom:0;
+  }
+</style>
+<script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+<script src="index.js"></script>
+<script>
+var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+function init() {
+	canvas = document.getElementById("canvas");
+	anim_container = document.getElementById("animation_container");
+	dom_overlay_container = document.getElementById("dom_overlay_container");
+	var comp=AdobeAn.getComposition("21C6AAD25D69364D8CE294CB58A32F8F");
+	var lib=comp.getLibrary();
+	handleComplete({},comp);
+}
+function handleComplete(evt,comp) {
+	//This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
+	var lib=comp.getLibrary();
+	var ss=comp.getSpriteSheet();
+	exportRoot = new lib.index();
+	stage = new lib.Stage(canvas);	
+	//Registers the "tick" event listener.
+	fnStartAnimation = function() {
+		stage.addChild(exportRoot);
+		createjs.Ticker.setFPS(lib.properties.fps);
+		createjs.Ticker.addEventListener("tick", stage);
+	}	    
+	//Code to support hidpi screens and responsive scaling.
+	function makeResponsive(isResp, respDim, isScale, scaleType) {		
+		var lastW, lastH, lastS=1;		
+		window.addEventListener('resize', resizeCanvas);		
+		resizeCanvas();		
+		function resizeCanvas() {			
+			var w = lib.properties.width, h = lib.properties.height;			
+			var iw = window.innerWidth, ih=window.innerHeight;			
+			var pRatio = window.devicePixelRatio || 1, xRatio=iw/w, yRatio=ih/h, sRatio=1;			
+			if(isResp) {                
+				if((respDim=='width'&&lastW==iw) || (respDim=='height'&&lastH==ih)) {                    
+					sRatio = lastS;                
+				}				
+				else if(!isScale) {					
+					if(iw<w || ih<h)						
+						sRatio = Math.min(xRatio, yRatio);				
+				}				
+				else if(scaleType==1) {					
+					sRatio = Math.min(xRatio, yRatio);				
+				}				
+				else if(scaleType==2) {					
+					sRatio = Math.max(xRatio, yRatio);				
+				}			
+			}			
+			canvas.width = w*pRatio*sRatio;			
+			canvas.height = h*pRatio*sRatio;
+			canvas.style.width = dom_overlay_container.style.width = anim_container.style.width =  w*sRatio+'px';				
+			canvas.style.height = anim_container.style.height = dom_overlay_container.style.height = h*sRatio+'px';
+			stage.scaleX = pRatio*sRatio;			
+			stage.scaleY = pRatio*sRatio;			
+			lastW = iw; lastH = ih; lastS = sRatio;            
+			stage.tickOnUpdate = false;            
+			stage.update();            
+			stage.tickOnUpdate = true;		
+		}
+	}
+	makeResponsive(true,'both',false,1);	
+	AdobeAn.compositionLoaded(lib.properties.id);
+	fnStartAnimation();
+}
+</script>
+<!-- write your code here -->
+</head>
+<body onload="init();" style="margin:0px;">
+	<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:720px; height:1280px">
+		<canvas id="canvas" width="720" height="1280" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:720px; height:1280px; position: absolute; left: 0px; top: 0px; display: block;">
 		</div>
-		<div class="download">
-			<img class="bg-download" src="download.jpg">
-			<a class="btn-download" onclick="gotoDownload()"></a>
-		</div>
-		<script type="text/javascript">
-			var UA = window.navigator.userAgent;
-			var isIOS = UA.match(/(iPhone|iPad);/i);
-			window.onload = function () {
-				if (isWeiXin() && !isIOS) {
-					document.body.style.overflow = 'hidden';
-					document.getElementsByTagName("html")[0].style.overflow = 'hidden';
-					document.getElementsByClassName("bg-mask")[0].style.display = "block";
-				} else if (isIOS) {
-					window.location.href = "bjrcb://";
-				}
-			};
-			function isWeiXin () {
-				var ua = UA.toLowerCase();
-				if (ua.match(/MicroMessenger/i) == 'micromessenger'){
-					return true;
-				} else {
-				  	return false;
-				}
-			};
-			function gotoDownload () {
-				if (isIOS) {
-					window.location.href = "https://itunes.apple.com/cn/app/id1381334034?1=cn&mt=8";
-				} else {
-					window.location.href = "http://download.bjrcb.com/mbs/bjrcb_1.5.0.apk";
-				}
-			};
-		</script>
-   </body>
+	</div>
+</body>
 </html>

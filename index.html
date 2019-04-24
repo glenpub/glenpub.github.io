@@ -1,230 +1,411 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 	<meta charset="UTF-8">
-	<title>邀请好友活动页面</title>
-	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
-	<meta content="yes" name="apple-mobile-web-app-capable" />
-	<meta content="black" name="apple-mobile-web-app-status-bar-style" />
-	<meta content="telephone=no" name="format-detection" />
-	<link href="css/style.css" rel="stylesheet" type="text/css" />
-
-
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="apple-touch-fullscreen" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="keywords" content="注册会员邀请好友">
+	<meta name="description" content="注册会员邀请好友">
+	<meta name="author" content="AUI, a-ui.com">
+	<title>注册会员邀请好友</title>
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	<link href="iTunesArtwork@2x.png" sizes="114x114" rel="apple-touch-icon-precomposed">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
+	<link rel="stylesheet" type="text/css" href="css/home.css">
+	<style>
+		.shade-mask{
+			position: fixed;
+			z-index: 999;
+			left: 0;
+			top: 0;
+			right: 0;
+			background: rgba(0, 0, 0, 0.7);
+			display:block;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+		}
+		.shade-login{
+			left: 0;
+			top: 40%;
+			z-index: 9999;
+			display: block;
+			width: 80%;
+			margin: 0 10%;
+			text-align: center;
+			position: fixed !important;
+			background-size: cover;
+			background: rgba(255, 255, 255, 0.9);
+			padding: 30px;
+			height:140px;
+		}
+		.shade-login h3{
+			padding-bottom:20px;
+			font-size:16px;
+		}
+		.shade-login a{
+			background:#d9464f;
+			width:150px;
+			height:34px;
+			line-height:34px;
+			border-radius:5px;
+			display:inline-block;
+			color:#fff;
+			font-size:14px;
+			text-align:center;
+		}
+	</style>
 </head>
 <body>
-
-<section class="aui-flexView">
-	<header class="aui-navBar aui-navBar-fixed">
-		<a href="javascript:;" class="aui-navBar-item">
-			<i class="icon icon-return"></i>
-		</a>
-		<div class="aui-center">
-			<span class="aui-center-title">邀请好友活动</span>
+<header class="ui-header ui-header-positive ui-border-b">
+	<i class="ui-icon-return" onclick="history.back()"></i>
+	<h1>邀请好友</h1>
+</header>
+<div class="in-body">
+	<div id="in-self" class="in-self"></div>
+	<!-- header begin -->
+	<header id="header">
+		<div class="in-header">
+			<img src="img/por/head.png" alt="">
 		</div>
-		<a href="javascript:;" class="aui-navBar-item">
-			<i class="icon icon-sys"></i>
-		</a>
+		<div class="in-button-box">
+			<div class="in-button" id="myBtn">
+				<img src="img/icon/icon-btn.png" alt="">
+			</div>
+		</div>
+		<div class="in-code" onclick="Ceng()">
+			<img src="img/icon/ewm.png" alt="">
+		</div>
+		<!-- pop begin -->
+		<div id="ceng" class="in-cen"></div>
+		<div id="close" class="in-pop">
+			<div class="in-self-info">
+				<a onclick="closeCeng()">
+					<img src="img/icon/icon-close.png" alt="">
+				</a>
+				<div class="in-pop-text">
+					<p>您的专属邀请二维码</p>
+					<p>长按可保存</p>
+				</div>
+			</div>
+		</div>
+		<!-- pop end -->
+		<!-- share  begin-->
+		<div id="myModal" class="modal ">
+			<!-- 弹窗内容 -->
+			<div class="modal-content ">
+				<div class="modal-header">
+					<span class="close"></span>
+				</div>
+				<div class="gb_resLay">
+					<div class="gb_res_t">
+						<span>分享到</span>
+						<i></i>
+					</div>
+					<div class="bdsharebuttonbox">
+						<ul class="gb_resItms clearfix">
+							<li>
+								<a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a>
+								微信好友
+							</li>
+							<li>
+								<a title="分享到QQ好友" href="#" class="bds_sqq" data-cmd="sqq"></a>
+								QQ好友
+							</li>
+							<li>
+								<a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a>
+								QQ空间
+							</li>
+							<li>
+								<a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a>
+								腾讯微博
+							</li>
+							<li>
+								<a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a>
+								新浪微博
+							</li>
+							<li>
+								<a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a>
+								人人网
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- share  end-->
 	</header>
-	<section class="aui-scrollView">
-		<div class="aui-invitation-head">
-			<img src="images/head.jpg" class="aui-invitation-ad" alt="">
-			<div class="aui-flex aui-flex-color">
-				<div class="aui-flex-box">
-					<div class="box">
-						<div class="t_news">
-							<ul class="news_li">
-								<li>
-									<a href="javascript:return false;"><img src="images/user-logo-001.png" alt="">李嘉桦 已经获得一个现金红包8888元</a>
-								</li>
-								<li>
-									<a href="javascript:return false;"><img src="images/user-logo-001.png" alt="">李嘉桦 已经获得一个现金红包88888元</a>
-								</li>
-								<li>
-									<a href="javascript:return false;"><img src="images/user-logo-001.png" alt="">李嘉桦 已经获得一个现金红包88888元</a>
-								</li>
-								<li>
-									<a href="javascript:return false;"><img src="images/user-logo-001.png" alt="">李嘉桦 已经获得一个现金红包888888元</a>
-								</li>
-								<li>
-									<a href="javascript:return false;"><img src="images/user-logo-001.png" alt="">李嘉桦 已经获得一个现金红包888888元</a>
-								</li>
-							</ul>
-							<ul class="swap"></ul>
+	<!-- header end -->
+	<!-- content begin -->
+	<section id="content">
+		<div class="in-content">
+			<div class="in-content-line"></div>
+			<div class="in-content-box">
+				<div class="in-content-title">
+					<h2>- 邀请排行榜 -</h2>
+					<div class="in-line-left">
+						<img src="img/icon/icon-line.png" alt="">
+					</div>
+					<div class="in-line-right">
+						<img src="img/icon/icon-line.png" alt="">
+					</div>
+				</div>
+				<div class="in-content-links">
+					<a href="page.html">
+						<div class="in-content-hd">
+							<img src="img/por/head.png" alt="">
+						</div>
+						<div class="in-content-bd">
+							<p>童话</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>10</em>
+								人
+							</p>
+						</div>
+					</a>
+					<div class="in-line-left in-content-left">
+						<img src="img/icon/icon-line.png" alt="">
+					</div>
+					<div class="in-line-right in-content-right">
+						<img src="img/icon/icon-line.png" alt="">
+					</div>
+				</div>
+				<div class="in-content-fellow">
+					<div class="in-fellow-well">
+						<div class="in-content-tx">
+							<img src="img/icon/nub1.png" alt="">
+						</div>
+						<div class="in-content-hd ">
+							<img src="img/por/user10.png" alt="">
+							<div class="in-red-crown"></div>
+						</div>
+						<div class="in-content-bd red">
+							<p>太阳神话</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>42</em>
+								人
+							</p>
+						</div>
+					</div>
+					<div class="in-fellow-well">
+						<div class="in-content-tx">
+							<img src="img/icon/nub2.png" alt="">
+						</div>
+						<div class="in-content-hd">
+							<img src="img/por/user1.png" alt="">
+							<div class="in-yellow-crown"></div>
+						</div>
+						<div class="in-content-bd yellow">
+							<p>观浪渔村</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>21</em>
+								人
+							</p>
+						</div>
+					</div>
+					<div class="in-fellow-well">
+						<div class="in-content-tx">
+							<img src="img/icon/nub3.png" alt="">
+						</div>
+						<div class="in-content-hd">
+							<img src="img/por/user2.png" alt="">
+							<div class="in-blue-crown"></div>
+						</div>
+						<div class="in-content-bd blue">
+							<p>女神节</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>31</em>
+								人
+							</p>
+						</div>
+					</div>
+					<div class="in-fellow-well">
+						<div class="in-content-tx">
+							<img src="img/icon/nub4.png" alt="">
+						</div>
+						<div class="in-content-hd">
+							<img src="img/por/user3.png" alt="">
+						</div>
+						<div class="in-content-bd">
+							<p>太阳神话</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>13</em>
+								人
+							</p>
+						</div>
+					</div>
+					<div class="in-fellow-well">
+						<div class="in-content-tx">
+							<img src="img/icon/nub5.png" alt="">
+						</div>
+						<div class="in-content-hd">
+							<img src="img/por/head.png" alt="">
+						</div>
+						<div class="in-content-bd">
+							<p>芸姐</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>23</em>
+								人
+							</p>
+						</div>
+					</div>
+					<div class="in-fellow-well">
+						<div class="in-content-tx">
+							<img src="img/icon/nub6.png" alt="">
+						</div>
+						<div class="in-content-hd">
+							<img src="img/por/user4.png" alt="">
+						</div>
+						<div class="in-content-bd">
+							<p>于嘉瑜伽</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>30</em>
+								人
+							</p>
+						</div>
+					</div>
+					<div class="in-fellow-well">
+						<div class="in-content-tx">
+							<img src="img/icon/nub7.png" alt="">
+						</div>
+						<div class="in-content-hd">
+							<img src="img/por/user5.png" alt="">
+						</div>
+						<div class="in-content-bd">
+							<p>海洋天空</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>30</em>
+								人
+							</p>
+						</div>
+					</div>
+					<div class="in-fellow-well">
+						<div class="in-content-tx">
+							<img src="img/icon/nub8.png" alt="">
+						</div>
+						<div class="in-content-hd">
+							<img src="img/por/user6.png" alt="">
+						</div>
+						<div class="in-content-bd">
+							<p>无所谓</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>30</em>
+								人
+							</p>
+						</div>
+					</div>
+					<div class="in-fellow-well">
+						<div class="in-content-tx">
+							<img src="img/icon/nub9.png" alt="">
+						</div>
+						<div class="in-content-hd">
+							<img src="img/por/user7.png" alt="">
+						</div>
+						<div class="in-content-bd">
+							<p>白兔子</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>30</em>
+								人
+							</p>
+						</div>
+					</div>
+					<div class="in-fellow-well">
+						<div class="in-content-tx ten">
+							<img src="img/icon/nub10.png" alt="">
+						</div>
+						<div class="in-content-hd">
+							<img src="img/por/user8.png" alt="">
+						</div>
+						<div class="in-content-bd">
+							<p>望着有缘人</p>
+						</div>
+						<div class="in-content-ft">
+							<p>
+								已邀请 <em>32</em>
+								人
+							</p>
 						</div>
 					</div>
 				</div>
 			</div>
-
-		</div>
-		<div class="aui-invitation-content">
-			<div class="aui-invitation-item">
-				<div class="aui-invitation-title">
-					<h2>NO.1 重礼</h2>
-				</div>
-				<div class="aui-coupon-body">
-					<h2>888<em>元</em> </h2>
-				</div>
-				<div class="aui-coupon-text">
-					<p>徒弟用户送实时运费劵，首次使用</p>
-					<span>最高返现8888元</span>
-				</div>
-			</div>
-			<div class="aui-invitation-item">
-				<div class="aui-invitation-title">
-					<h2>NO.2 重礼</h2>
-				</div>
-				<div class="aui-coin-img">
-					<img src="images/coin.png" alt="">
-				</div>
-				<div class="aui-coupon-text">
-					<p>徒弟的徒弟可为每位师傅提供</p>
-					<span>1元的现金红包</span>
-				</div>
-			</div>
-			<div class="aui-invitation-item">
-				<div class="aui-invitation-title">
-					<h2>NO.3 重礼</h2>
-				</div>
-				<div class="aui-coupon-text aui-coupon-text-top">
-					<p>成功邀请好友注册认证信贷款的用户，您可以获得现金红包8888元(奖励)</p>
-				</div>
-				<div class="aui-invitation-table">
-					<table id="jqueryTable">
-						<tr>
-							<th>邀请阶梯</th>
-							<th>累计奖励订单</th>
-						</tr>
-						<tr>
-							<td>邀请1人</td>
-							<td>1个订单</td>
-						</tr>
-						<tr>
-							<td>邀请2人</td>
-							<td>3个订单</td>
-						</tr>
-						<tr>
-							<td>邀请5人</td>
-							<td>5个订单</td>
-						</tr>
-						<tr>
-							<td>邀请6人</td>
-							<td>6个订单</td>
-						</tr>
-						<tr>
-							<td>邀请8人</td>
-							<td>8个订单</td>
-						</tr>
-						<tr>
-							<td>邀请9人</td>
-							<td>9个订单</td>
-						</tr>
-						<tr>
-							<td>邀请12人</td>
-							<td>12个订单</td>
-						</tr>
-						<tr>
-							<td>邀请14人</td>
-							<td>14个订单</td>
-						</tr>
-						<tr>
-							<td>邀请15人</td>
-							<td>15个订单</td>
-						</tr>
-						<tr>
-							<td>邀请22人</td>
-							<td>22个订单</td>
-						</tr>
-					</table>
-				</div>
+			<div class="in-links">
+				<a href="rule.html">查看活动规则</a>
 			</div>
 		</div>
-
 	</section>
-	<footer class="aui-footer aui-footer-fixed" data-ydui-actionsheet="{target:'#actionSheet',closeElement:'#cancel'}">
-		<a href="javascript:;" class="aui-tabBar-item">
-			<span class="aui-tabBar-item-text">邀请徒弟</span>
-		</a>
-	</footer>
-</section>
-<div class="m-actionsheet" id="actionSheet">
-	<div class="aui-show-box">
-		<div class="aui-show-box-title aui-footer-flex">
-			<div class="b-line aui-coll-share-box">
-				<a href="javascript:;" class="aui-coll-share-item">
-					<div class="aui-coll-share-img">
-						<img src="images/icon-wx.png" alt="">
-					</div>
-					<div class="aui-coll-share-text">微信好友</div>
-				</a>
-				<a href="javascript:;" class="aui-coll-share-item">
-					<div class="aui-coll-share-img">
-						<img src="images/icon-pyq.png" alt="">
-					</div>
-					<div class="aui-coll-share-text">朋友圈</div>
-				</a>
-				<a href="javascript:;" class="aui-coll-share-item">
-					<div class="aui-coll-share-img">
-						<img src="images/icon-qq.png" alt="">
-					</div>
-					<div class="aui-coll-share-text">QQ</div>
-				</a>
-				<a href="javascript:;" class="aui-coll-share-item">
-					<div class="aui-coll-share-img">
-						<img src="images/icon-kj.png" alt="">
-					</div>
-					<div class="aui-coll-share-text">QQ空间</div>
-				</a>
-				<a href="javascript:;" class="aui-coll-share-item">
-					<div class="aui-coll-share-img">
-						<img src="images/icon-txw.png" alt="">
-					</div>
-					<div class="aui-coll-share-text">腾讯微博</div>
-				</a>
-				<a href="javascript:;" class="aui-coll-share-item">
-					<div class="aui-coll-share-img">
-						<img src="images/icon-wb.png" alt="">
-					</div>
-					<div class="aui-coll-share-text">新浪微博</div>
-				</a>
-			</div>
-			<div class="aui-coll-cancel">
-				<a href="javascript:;" id="cancel" class="">取消
-				</a>
-			</div>
-		</div>
-	</div>
+	<!-- content end -->
 </div>
 
+
+<script src="js/in-jquery.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+	//二维码弹窗
+    function Ceng() {
+        document.getElementById('ceng').style.display = 'block';
+        document.getElementById('close').style.display = 'block';
+        return false;
+    }
+    function closeCeng() {
+        document.getElementById('ceng').style.display = 'none';
+        document.getElementById('close').style.display = 'none';
+        return false;
+
+    }
+
+    // 获取弹窗
+    var modal = document.getElementById('myModal');
+
+    // 打开弹窗的按钮对象
+
+    var btn = document.getElementById("myBtn");
+
+    // 获取 <span> 元素，用于关闭弹窗 that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // 点击按钮打开弹窗
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // 点击 <span> (x), 关闭弹窗
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // 在用户点击其他地方时，关闭弹窗
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+
+</script>
 </body>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/layer.js"></script>
-	<script type="text/javascript">
-
-
-		function b() {
-			t = parseInt(x.css('top'));
-			y.css('top', '25px');
-			x.animate({
-				top: t - 25 + 'px'
-			}, 'slow');
-			if (Math.abs(t) == h - 25) {
-				y.animate({
-					top: '0px'
-				}, 'slow');
-				z = x;
-				x = y;
-				y = z;
-			}
-			setTimeout(b, 3000);
-		}
-		$(document).ready(function() {
-			$('.swap').html($('.news_li').html());
-			x = $('.news_li');
-			y = $('.swap');
-			h = $('.news_li li').length * 25;
-			setTimeout(b, 3000);
-		})
-	</script>
-
 </html>
